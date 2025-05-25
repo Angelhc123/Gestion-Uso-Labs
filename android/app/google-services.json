@@ -1,0 +1,143 @@
+{
+  "project_info": {
+    "project_number": "599080851542",
+    "project_id": "fir-9e994",
+    "storage_bucket": "fir-9e994.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:599080851542:android:268cd5d4de046e2c34c3f7",
+        "android_client_info": {
+          "package_name": "com.ejemplo.flutter_application_11"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc0zmQsiBjsQsd27WdXNsiEbMt5I88OFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:599080851542:android:5bb26c6a3ac5da6934c3f7",
+        "android_client_info": {
+          "package_name": "com.example.agenda"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc0zmQsiBjsQsd27WdXNsiEbMt5I88OFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:599080851542:android:f3f36f415b914c1834c3f7",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc0zmQsiBjsQsd27WdXNsiEbMt5I88OFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:599080851542:android:d742cf0ca9f8420334c3f7",
+        "android_client_info": {
+          "package_name": "com.example.controlusolab"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc0zmQsiBjsQsd27WdXNsiEbMt5I88OFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:599080851542:android:4c7f8020cca22e3134c3f7",
+        "android_client_info": {
+          "package_name": "com.example.cosasperdidas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc0zmQsiBjsQsd27WdXNsiEbMt5I88OFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:599080851542:android:252e8047e3e5e0be34c3f7",
+        "android_client_info": {
+          "package_name": "com.example.juegokahot"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc0zmQsiBjsQsd27WdXNsiEbMt5I88OFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:599080851542:android:c41ec14029913b6734c3f7",
+        "android_client_info": {
+          "package_name": "example.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc0zmQsiBjsQsd27WdXNsiEbMt5I88OFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

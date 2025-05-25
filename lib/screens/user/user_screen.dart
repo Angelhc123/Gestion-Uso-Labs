@@ -5,20 +5,21 @@ import 'package:controlusolab/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-// Importar las vistas de usuario
-import 'views/home_view.dart';
-import 'views/request_lab_view.dart';
-import 'views/lab_schedule_view.dart';
-import 'views/coming_soon_view.dart';
+// Importar las vistas de usuario desde sus nuevas ubicaciones
+import 'views/home/home_view.dart'; 
+import 'views/request_lab/request_lab_view.dart'; 
+import 'views/lab_schedule/lab_schedule_view.dart';
+import 'views/coming_soon/coming_soon_view.dart';
+import '../../utils/app_colors.dart'; // Importar colores globales
 
-// Paleta de colores (puede moverse a un archivo de tema/constantes global)
-const Color primaryDarkPurple = Color(0xFF381E72);
-const Color secondaryDark = Color(0xFF1C1B1F);
-const Color accentPurple = Color(0xFFD0BCFF);
-const Color textOnDark = Colors.white;
-const Color textOnDarkSecondary = Color(0xFFCAC4D0);
-
-enum UserScreenView { home, solicitarAula, verSolicitudes, perfil, verHorario }
+// Definición del Enum para las vistas
+enum UserScreenView {
+  home,
+  solicitarAula,
+  verHorario,
+  verSolicitudes,
+  perfil,
+}
 
 class UserScreen extends StatefulWidget {
   const UserScreen({super.key});
@@ -79,7 +80,7 @@ class _UserScreenState extends State<UserScreen> {
         _isLoadingCourses = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error al cargar cursos: $e', style: const TextStyle(color: textOnDark)), backgroundColor: Colors.redAccent),
+        SnackBar(content: Text('Error al cargar cursos: $e', style: const TextStyle(color: textOnDark)), backgroundColor: errorColor), // Usar errorColor global
       );
     }
   }
@@ -98,7 +99,7 @@ class _UserScreenState extends State<UserScreen> {
         _isLoadingLaboratories = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error al cargar laboratorios: $e', style: const TextStyle(color: textOnDark)), backgroundColor: Colors.redAccent),
+        SnackBar(content: Text('Error al cargar laboratorios: $e', style: const TextStyle(color: textOnDark)), backgroundColor: errorColor), // Usar errorColor global
       );
     }
   }
@@ -170,7 +171,7 @@ class _UserScreenState extends State<UserScreen> {
             fontSize: 16,
           ),
         ),
-        trailing: boolComingSoon ? const Text("Pronto", style: TextStyle(color: Colors.amberAccent, fontSize: 10)) : null,
+        trailing: boolComingSoon ? const Text("Pronto", style: TextStyle(color: warningColor, fontSize: 10)) : null, // Usar warningColor
         onTap: () {
           Navigator.pop(context); // Cierra el Drawer
           if (mounted) {
@@ -201,25 +202,20 @@ class _UserScreenState extends State<UserScreen> {
   }
 
   Widget _buildCurrentView() {
-    // Si los datos compartidos aún se están cargando, muestra un indicador general.
-    // Las vistas individuales también pueden tener sus propios indicadores si cargan datos adicionales.
     if (_isLoadingLaboratories || _isLoadingCourses) {
       return const Center(child: CircularProgressIndicator(color: accentPurple));
     }
 
     switch (_currentView) {
       case UserScreenView.home:
-        return const HomeView();
+        return const HomeView(); // Se importa desde views/home/home_view.dart
       case UserScreenView.solicitarAula:
-        return RequestLabView(
+        return RequestLabView( // Se importa desde views/request_lab/request_lab_view.dart
           laboratories: _laboratories,
-          isLoadingLaboratories: _isLoadingLaboratories, // Aunque cargado aquí, la vista podría usarlo
+          isLoadingLaboratories: _isLoadingLaboratories, 
           courses: _courses,
-          isLoadingCourses: _isLoadingCourses, // Igual que arriba
+          isLoadingCourses: _isLoadingCourses, 
           onLaboratorySelected: (lab) {
-            // Cuando un laboratorio es seleccionado en el formulario de RequestLabView,
-            // actualizamos _labSelectedInFormForSchedule para que LabScheduleView
-            // pueda usarlo si el usuario navega allí.
             if (mounted) {
               setState(() {
                 _labSelectedInFormForSchedule = lab;
@@ -227,26 +223,24 @@ class _UserScreenState extends State<UserScreen> {
             }
           },
           onRequestSubmitted: () {
-            // Después de enviar una solicitud, volvemos a la vista de inicio.
             if (mounted) {
               setState(() {
                 _currentView = UserScreenView.home;
-                 // Opcional: Limpiar _labSelectedInFormForSchedule si ya no es relevante
                 _labSelectedInFormForSchedule = null;
               });
             }
           },
         );
       case UserScreenView.verHorario:
-        return LabScheduleView(
+        return LabScheduleView( // Se importa desde views/lab_schedule/lab_schedule_view.dart
           laboratories: _laboratories,
           isLoadingLaboratories: _isLoadingLaboratories,
-          initiallySelectedLab: _labSelectedInFormForSchedule, // Pasa el lab seleccionado en el form (si existe)
+          initiallySelectedLab: _labSelectedInFormForSchedule, 
         );
       case UserScreenView.verSolicitudes:
-        return ComingSoonView(title: _getViewTitle());
+        return ComingSoonView(title: _getViewTitle()); // Se importa desde views/coming_soon/coming_soon_view.dart
       case UserScreenView.perfil:
-        return ComingSoonView(title: _getViewTitle());
+        return ComingSoonView(title: _getViewTitle()); // Se importa desde views/coming_soon/coming_soon_view.dart
       default:
         return const HomeView();
     }

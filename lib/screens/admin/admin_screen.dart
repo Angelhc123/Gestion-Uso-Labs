@@ -1,16 +1,11 @@
 import 'package:controlusolab/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
-// Importar las vistas y ReportsScreen usando rutas relativas correctas
-import 'views/manage_support_users_view.dart';
-import 'views/support_actions_history_view.dart';
-import 'reports/reports_screen.dart';
-
-// Paleta de colores
-const Color primaryDarkPurple = Color(0xFF381E72);
-const Color secondaryDark = Color(0xFF242424);
-const Color accentPurple = Color(0xFF9B59B6);
-const Color textOnDark = Color(0xFFFFFFFF);
+// Importar las vistas desde sus nuevas ubicaciones
+import 'views/manage_users/manage_support_users_view.dart';
+import 'views/actions_history/support_actions_history_view.dart';
+import 'views/reports/reports_screen.dart'; // Actualizar ruta
+import '../../utils/app_colors.dart'; // Importar colores globales
 
 class AdminScreen extends StatefulWidget {
   const AdminScreen({Key? key}) : super(key: key);
@@ -38,14 +33,14 @@ class _AdminScreenState extends State<AdminScreen> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: secondaryDark,
+      backgroundColor: adminViewSecondaryDark, // Usar color específico de admin o secondaryDark
       appBar: AppBar(
         title: const Text('Panel de Administrador', style: TextStyle(color: textOnDark, fontWeight: FontWeight.bold)),
-        backgroundColor: primaryDarkPurple,
-        iconTheme: const IconThemeData(color: accentPurple),
+        backgroundColor: primaryDarkPurple, // O un color primario específico de admin
+        iconTheme: const IconThemeData(color: adminViewAccentPurple), // O accentPurple
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout, color: accentPurple),
+            icon: const Icon(Icons.logout, color: adminViewAccentPurple), // O accentPurple
             tooltip: "Cerrar Sesión",
             onPressed: () async {
               await _authService.signOut();
@@ -57,8 +52,8 @@ class _AdminScreenState extends State<AdminScreen> with SingleTickerProviderStat
         ],
         bottom: TabBar(
           controller: _tabController,
-          indicatorColor: accentPurple,
-          labelColor: accentPurple,
+          indicatorColor: adminViewAccentPurple, // O accentPurple
+          labelColor: adminViewAccentPurple, // O accentPurple
           unselectedLabelColor: textOnDark.withOpacity(0.7),
           tabs: const [
             Tab(icon: Icon(Icons.people_alt_outlined), text: 'Usuarios Soporte'),
@@ -71,8 +66,8 @@ class _AdminScreenState extends State<AdminScreen> with SingleTickerProviderStat
         controller: _tabController,
         children: [
           const ManageSupportUsersView(),
-          SupportActionsHistoryView(), // Si es StatefulWidget y no tiene constructor const, está bien
-          const ReportsScreen(), // Añadir const si ReportsScreen es StatelessWidget
+          SupportActionsHistoryView(), 
+          const ReportsScreen(),
         ],
       ),
     );

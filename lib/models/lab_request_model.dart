@@ -6,7 +6,7 @@ class LabRequestModel {
   final String cycle;
   final String courseOrTheme;
   final String laboratory; // Nombre del laboratorio
-  final String? laboratoryId; // ID del laboratorio, opcional por retrocompatibilidad
+  final String? laboratoryId; // ID del laboratorio, AHORA NULLABLE
   final DateTime entryTime;
   final DateTime exitTime;
   final DateTime requestTime;
@@ -14,6 +14,7 @@ class LabRequestModel {
   final String? supportComment; // Nuevo: Comentario del soporte
   final DateTime? actionTimestamp; // Nuevo: Hora de aprobación/rechazo
   final String? processedBySupportUserId; // Nuevo: ID del usuario de soporte que procesó
+  final String? justification; // Nuevo campo
 
   LabRequestModel({
     required this.id,
@@ -21,7 +22,7 @@ class LabRequestModel {
     required this.cycle,
     required this.courseOrTheme,
     required this.laboratory,
-    this.laboratoryId, // Añadido
+    this.laboratoryId, // Ya es opcional, ahora coincide con el tipo nullable
     required this.entryTime,
     required this.exitTime,
     required this.requestTime,
@@ -29,6 +30,7 @@ class LabRequestModel {
     this.supportComment,
     this.actionTimestamp,
     this.processedBySupportUserId,
+    this.justification, // Nuevo campo
   });
 
   // Método para convertir un LabRequestModel a un Map para Firestore
@@ -38,7 +40,7 @@ class LabRequestModel {
       'cycle': cycle,
       'courseOrTheme': courseOrTheme,
       'laboratory': laboratory,
-      'laboratoryId': laboratoryId, // Añadido
+      'laboratoryId': laboratoryId, // Correcto, puede ser null
       'entryTime': Timestamp.fromDate(entryTime),
       'exitTime': Timestamp.fromDate(exitTime),
       'requestTime': Timestamp.fromDate(requestTime),
@@ -46,6 +48,7 @@ class LabRequestModel {
       'supportComment': supportComment, // Añadido
       'actionTimestamp': actionTimestamp != null ? Timestamp.fromDate(actionTimestamp!) : null, // Añadido
       'processedBySupportUserId': processedBySupportUserId, // Añadido
+      'justification': justification, // Nuevo campo
     };
   }
 
@@ -57,7 +60,7 @@ class LabRequestModel {
       cycle: map['cycle'] ?? '',
       courseOrTheme: map['courseOrTheme'] ?? '',
       laboratory: map['laboratory'] ?? '',
-      laboratoryId: map['laboratoryId'], // Añadido
+      laboratoryId: map['laboratoryId'], // Correcto, puede ser null y se asigna a un tipo nullable
       entryTime: (map['entryTime'] as Timestamp).toDate(),
       exitTime: (map['exitTime'] as Timestamp).toDate(),
       requestTime: (map['requestTime'] as Timestamp).toDate(),
@@ -65,6 +68,7 @@ class LabRequestModel {
       supportComment: map['supportComment'], // Añadido
       actionTimestamp: map['actionTimestamp'] != null ? (map['actionTimestamp'] as Timestamp).toDate() : null, // Añadido
       processedBySupportUserId: map['processedBySupportUserId'], // Añadido
+      justification: map['justification'], // Nuevo campo
     );
   }
 }

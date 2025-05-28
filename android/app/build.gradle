@@ -10,7 +10,7 @@ plugins {
 
 android {
     namespace = "com.example.controlusolab"
-    compileSdk = 35 // Modificado de flutter.compileSdkVersion
+    compileSdkVersion 35 // ACTUALIZADO a 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -24,11 +24,11 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.controlusolab"
+        applicationId = "com.example.controlusolab" // Asegúrate que tu applicationId sea correcto
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 23 // Modificado de flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        minSdkVersion 23 // O 21 si lo prefieres, pero 23 es común
+        targetSdkVersion 35 // ACTUALIZADO a 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }

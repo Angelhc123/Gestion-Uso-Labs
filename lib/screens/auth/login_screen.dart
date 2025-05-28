@@ -1,3 +1,4 @@
+import 'package:controlusolab/screens/dev/temporal_data_upload_screen.dart'; // Asegúrate que la ruta sea correcta
 import 'package:controlusolab/services/auth_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -141,17 +142,43 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 const SizedBox(height: 20),
-                _isLoading
-                    ? const Center(child: CircularProgressIndicator(color: accentPurple))
-                    : ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: accentPurple,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                        ),
-                        onPressed: _login,
-                        child: const Text('Ingresar', style: TextStyle(fontSize: 18, color: primaryDarkPurple, fontWeight: FontWeight.bold)),
+                if (_isLoading)
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: CircularProgressIndicator(color: accentPurple),
+                  )
+                else
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: accentPurple,
+                        foregroundColor: primaryDarkPurple,
+                        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                       ),
+                      onPressed: _login,
+                      child: const Text('Iniciar Sesión'),
+                    ),
+                  ),
+
+                // BOTÓN PARA NAVEGAR A LA PANTALLA DE CARGA DE DATOS
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const TemporalDataUploadScreen()),
+                    );
+                  },
+                  child: const Text(
+                    'Ir a Carga de Datos (DEV)',
+                    style: TextStyle(color: accentPurple, decoration: TextDecoration.underline),
+                  ),
+                ),
+                // FIN DEL BOTÓN DE CARGA DE DATOS
+
+                const SizedBox(height: 20),
                 TextButton(
                   onPressed: () {
                     // Navegar a la pantalla de registro si existe

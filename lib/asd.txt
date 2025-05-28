@@ -1,0 +1,305 @@
+LABORATORIO A
+
+LUNES
+09:40 - 11:20: Programación I - Israel Chaparro
+11:20 - 13:00: Estructura de Datos - H. Sisa
+15:50 - 17:30: Gestión de Proyectos - Martha Paredes
+17:30 - 19:10: Ingeniería de Software - Martha Paredes
+20:00 - 21:40: Construcción de Software I - A. Flor
+
+MARTES
+08:00 - 09:40: Sistemas Elect. Digitales - Alex Yanqui
+11:20 - 13:00: Diseño de Base de Datos - H. Sisa
+15:00 - 16:40: Estructura de Datos - Israel Chaparro
+16:40 - 18:20: Soluciones Móviles I - Elard Rodriguez
+18:20 - 21:40: Inteligencia de Negocios - P. Cuadros
+
+MIÉRCOLES
+08:00 - 09:40: Diseño y Modelamiento Virtual - Elard Rodriguez
+09:40 - 11:20: Programación I - Israel Chaparro
+11:20 - 13:00: Estructura de Datos - H. Sisa
+15:50 - 18:20: Taller de Tesis II / Trabajo de Investigación - Luis Fernandez
+18:20 - 20:00: Soluciones Móviles I - Elard Rodriguez
+20:00 - 21:40: Construcción de Software I - Ricardo Valcarcel
+
+JUEVES
+09:40 - 11:20: Diseño de Base de Datos - H. Sisa
+11:20 - 13:00: Estructura de Datos - H. Sisa
+15:00 - 16:40: Estructura de Datos - Israel Chaparro
+16:40 - 18:20: Ingeniería de Requerimientos - Mariella Ibarra
+18:20 - 20:00: Gestión de la Configuración y Adm. De SW - Ricardo Valcarcel
+20:00 - 21:40: Construcción de Software I - A. Flor
+
+VIERNES
+09:40 - 11:20: Programación I - Israel Chaparro
+12:10 - 13:00: Diseño de Base de Datos - H. Sisa
+15:00 - 16:40: Estructura de Datos - Israel Chaparro
+16:40 - 18:20: Soluciones Móviles I - Elard Rodriguez
+
+SÁBADO
+08:00 - 09:40: Calidad y Pruebas de Software - P. Cuadros
+09:40 - 11:20: Inteligencia de Negocios - P. Cuadros
+11:20 - 13:00: Patrones de Software - P. Cuadros
+
+LABORATORIO B
+
+LUNES
+08:00 - 09:40: Sistemas Elect. Digitales - Alex Yanqui
+11:20 - 13:00: Modelamiento de Procesos - Juan Choque
+15:00 - 16:40: Taller de liderazgo y emprendimiento - Liliana Vega
+18:20 - 20:00: Redes y Comunic. de datos II - Martin Alcantara
+20:00 - 21:40: Redes y Comunic. de datos I - Martin Alcantara
+
+MARTES
+08:00 - 09:40: Sistemas de Información - Liliana Vega
+09:40 - 11:20: Arquitectura de Computadoras - Alex Yanqui
+11:20 - 13:00: Modelamiento de Procesos - Elard Rodriguez
+13:50 - 16:20: Diseño en Ingenieria - Elizabeth Merma
+
+MIÉRCOLES
+08:00 - 09:40: Sistemas de Información - Liliana Vega
+11:20 - 13:00: Arquitectura de Computadoras - Alex Yanqui
+15:00 - 16:40: Inteligencia Artificial - Israel Chaparro
+16:40 - 18:20: Planeamiento Estrategico de TI - O. Jimenez
+18:20 - 20:00: Infraestructura de TI - Martin Alcantara
+
+JUEVES
+09:40 - 11:20: Arquitectura de Computadoras - Alex Yanqui
+11:20 - 13:00: Sistemas Elect. Digitales - Alex Yanqui
+13:50 - 16:20: Diseño en Ingenieria - Elizabeth Merma
+18:20 - 20:00: Patrones de Software - P. Cuadros
+20:00 - 21:40: Redes y Comunic. de datos I - Martin Alcantara
+
+VIERNES
+08:00 - 09:40: Modelamiento de Procesos - Juan Choque
+11:20 - 13:00: Sistemas Elect. Digitales - Alex Yanqui
+16:40 - 18:20: Auditoria de Sistemas - O. Jimenez
+20:00 - 21:40: Redes y Comunic. de datos II - Martin Alcantara
+
+SÁBADO
+09:40 - 11:20: Infraestructura de TI - Martin Alcantara
+
+LABORATORIO C
+
+LUNES
+09:40 - 11:20: Programación II - E. Lanchipa
+11:20 - 13:00: Arquitectura de Computadoras - Alex Yanqui
+15:00 - 16:40: Inteligencia Artificial - Israel Chaparro
+16:40 - 18:20: Programación Web II - E. Lanchipa
+18:20 - 20:00: Base de Datos II - Juan Choque
+
+MARTES
+09:40 - 11:20: Interacción y Diseño de Interfaces - Tito Ale
+18:20 - 20:00: Seguridad de TI - Renzo Taco
+20:00 - 21:40: Construcción de Software II - Ricardo Valcarcel
+
+MIÉRCOLES
+09:40 - 11:20: Programación II - E. Lanchipa
+16:40 - 20:00: Programación Web II - E. Lanchipa
+
+JUEVES
+08:00 - 09:40: Interacción y Diseño de Interfaces - Tito Ale
+18:20 - 20:00: Seguridad de TI - Renzo Taco
+20:00 - 21:40: Construcción de Software II - Ricardo Valcarcel
+
+VIERNES
+08:00 - 09:40: Arquitectura de Computadoras - Alex Yanqui
+09:40 - 11:20: Programación II - E. Lanchipa
+15:50 - 18:20: Taller de Tesis I - Luis Fernandez
+18:20 - 20:00: Base de Datos II - Juan Choque
+20:00 - 21:40: Gerencia de TI - Ricardo Valcarcel
+
+SÁBADO
+08:00 - 09:40: Construcción de Software II - Ricardo Valcarcel
+09:40 - 13:00: Construcción de Software I - Ricardo Valcarcel
+
+LABORATORIO D
+
+LUNES
+09:40 - 11:20: Programación II - Elard Rodriguez
+16:40 - 18:20: Estadistica Inferencial y Analisis de Datos - L. Fernandez
+18:20 - 20:00: Sistemas Operativos I - Renzo Taco
+20:00 - 21:40: Investigación de Operaciones - Silvia Centella
+
+MARTES
+10:30 - 13:00: Técnicas de Programación - Juan Choque
+15:00 - 16:40: Programación III - Juan Choque
+16:40 - 18:20: Ingenieria de Requerimientos - Mariella Ibarra
+18:20 - 20:00: Gestión de la Configuración y Adm. De SW - Ricardo Valcarcel
+20:00 - 21:40: Construcción de Software I - A. Flor
+
+MIÉRCOLES
+08:00 - 09:40: Sistemas Elect. Digitales - Alex Yanqui
+15:00 - 16:40: Soluciones Moviles II - O. Jimenez
+
+JUEVES
+15:00 - 16:40: Programación III - Juan Choque
+16:40 - 18:20: Base de Datos I - E. Lanchipa
+20:00 - 21:40: Sistemas Operativos I - Renzo Taco
+
+VIERNES
+15:00 - 16:40: Programación III - Elard Rodriguez
+16:40 - 18:20: Base de Datos I - E. Lanchipa
+18:20 - 20:00: Sistemas Operativos I - Renzo Taco
+20:00 - 21:40: Diseño y Arq de Software - A. Flor
+
+SÁBADO
+[vacío - no hay cursos programados]
+
+LABORATORIO E
+
+LUNES
+08:00 - 09:40: Diseño de Base de Datos - E. Valencia
+11:20 - 13:00: Modelamiento de Procesos - Natividad
+15:50 - 17:30: Ingenieria de Requerimientos -
+20:00 - 21:40: Sistemas Operativos II - Renzo Taco
+
+MARTES
+11:20 - 13:00: Modelamiento de Procesos - Natividad
+16:40 - 18:20: Programación Web I - Tito Ale
+18:20 - 20:00: Base de Datos I - E. Lanchipa
+20:00 - 21:40: Sistemas Operativos II - Renzo Taco
+
+MIÉRCOLES
+08:00 - 09:40: Diseño de Base de Datos - E. Valencia
+09:40 - 11:20: Programación II - N.Quispe
+15:50 - 17:30: Gestión de Proyectos - Martha Paredes
+
+JUEVES
+08:00 - 09:40: Diseño y Modelamiento Virtual - Elard Rodriguez
+15:00 - 16:40: Auditoria de Sistemas - O. Jimenez
+16:40 - 18:20: Gestión de Proyectos - Martha Paredes
+18:20 - 20:00: Programación Web I - Tito Ale
+20:00 - 21:40: Calidad y Pruebas de Software - P. Cuadros
+
+VIERNES
+08:00 - 09:40: Modelamiento de Procesos - Natividad
+09:40 - 11:20: Programación II - N.Quispe
+15:00 - 16:40: Diseño de Base de Datos - E. Valencia
+16:40 - 18:20: Programación Web I - Tito Ale
+18:20 - 20:00: Soluciones Moviles II - O. Jimenez
+20:00 - 21:40: Sistemas Operativos II - Renzo Taco
+
+SÁBADO
+09:00 - 11:30: REFORZAMIENTO PROGRAMACION COMPETITIVA - Israel Chaparro
+
+LABORATORIO F
+
+LUNES
+08:00 - 09:40: INE-323 Estadistica y Prob - ING. J. ROMAINA
+15:50 - 17:30: Programación I - E. Valencia
+17:30 - 19:10: Ingeniería de Software - Liliana Vega
+
+MARTES
+08:00 - 09:40: Diseño y Modelamiento Virtual - Elard Rodriguez
+16:40 - 18:20: Ingeniería de Requerimientos - Juan Choque
+18:20 - 20:00: Base de Datos II - Juan Choque
+
+MIÉRCOLES
+09:40 - 11:20: Programación I - Israel Chaparro
+18:20 - 20:00: Diseño y Arq de Software - A. Flor
+
+JUEVES
+09:40 - 11:20: Ingeniería econ. y Financiera - Liliana Vega
+16:40 - 18:20: Ingeniería de Requerimientos - Juan Choque
+
+VIERNES
+11:20 - 13:00: INE-323 Estadistica y Prob - ING. J. ROMAINA
+16:40 - 18:20: Programación I - E. Valencia
+
+SÁBADO
+[vacío - no hay cursos programados]
+
+SALON P-301
+
+LUNES
+08:00 - 10:30: Matemática Básica - O. Arce
+10:30 - 12:10: Desarrollo Competencias Digitales - J. Alca
+13:00 - 15:50: Ecologia y desarrollo sostenible - Teresa Lanchipa
+
+MARTES
+08:00 - 10:30: Matemática I - German Mamani
+10:30 - 13:00: Estrategia para el Aprendizaje Autónomo - E. Vilela
+15:00 - 16:40: Inglés Técnico - N. Castro
+
+MIÉRCOLES
+08:00 - 10:30: Matemática Básica - O. Arce
+10:30 - 12:10: Comunicación I - A. Alca
+14:00 - 16:30: REFORZAMIENTO FISICA I - Manuel Aguilar
+17:30 - 19:10: Ingeniería de Software - Martha Paredes
+
+JUEVES
+08:00 - 10:30: Matemática I - German Mamani
+10:30 - 13:00: Desarrollo Personal y Liderazgo - D. Huanca
+15:00 - 16:40: Inglés Técnico - N. Castro
+16:40 - 18:20: Planeamiento Estrategico de TI - O. Jimenez
+18:20 - 20:00: Diseño y Arq de Software - A. Flor
+
+VIERNES
+08:50 - 10:30: Desarrollo Competencias Digitales - J. Alca
+10:30 - 12:10: Comunicación I - A. Alca
+18:20 - 20:00: Estadistica Inferencial y Analisis de Datos - L. Fernandez
+
+SÁBADO
+[vacío - no hay cursos programados]
+
+SALON P-307
+
+LUNES
+08:50 - 10:30: Comunicación II - E. Lopez
+10:30 - 13:00: Fisica I - J. Huayta
+20:00 - 21:40: Gerencia de TI - Ricardo Valcarcel
+
+MARTES
+08:00 - 10:30: Territorio Peruano Defensa y seguridad Nacional - E. Lopez
+10:30 - 13:00: Técnicas de Programación - Juan Choque
+13:50 - 16:20: Diseño en Ingenieria - Elizabeth Merma
+
+MIÉRCOLES
+08:00 - 10:30: Técnicas de Programación - Juan Choque
+10:30 - 13:00: Fisica I - J. Huayta
+13:50 - 16:20: Problemas y Desafios del Peru - Carlos Nuñez
+17:30 - 19:10: Ingeniería de Software - Liliana Vega
+20:00 - 21:40: Investigación de Operaciones - Silvia Centella
+
+JUEVES
+08:00 - 10:30: Matemática II - O. Flores
+10:30 - 12:10: Comunicación II - E. Lopez
+
+VIERNES
+08:00 - 10:30: Filosofia - A. Montero
+10:30 - 13:00: Matemática II - O. Flores
+15:50 - 18:20: REFORZAMIENTO MATEMATICA I - Roberto Montesinos
+
+SÁBADO
+09:00 - 11:30: PROGRAMACION COMPETITIVA - [Profesor no especificado]
+
+SALON Q-312
+
+LUNES
+08:00 - 09:40: Matemática Discreta - Silvia Centella
+09:40 - 11:20: Matemática Discreta - Silvia Centella
+11:20 - 13:00: Modelamiento de Procesos - Elard Rodriguez
+
+MARTES
+08:00 - 09:40: Matemática Discreta - Silvia Centella
+09:40 - 11:20: Matemática Discreta - Silvia Centella
+11:20 - 13:00: INE-323 Estadistica y Prob - 
+15:00 - 16:40: Taller de liderazgo y emprendimiento - Liliana Vega
+
+MIÉRCOLES
+08:00 - 09:40: Matemática Discreta - Silvia Centella
+09:40 - 11:20: Matemática Discreta - Silvia Centella
+11:20 - 13:00: Ingeniería econ. y Financiera - L. Vega
+15:50 - 17:30: Ingenieria de Requerimientos - Mariella Ibarra
+17:30 - 19:10: Ingeniería de Software - Martha Paredes
+
+JUEVES
+08:00 - 10:30: EG-322 ETICA - A. Crisosto
+
+VIERNES
+08:00 - 10:30: INE-321 ECONOMIA - D. Rubira
+
+SÁBADO
+[vacío - no hay cursos programados]
+

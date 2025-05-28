@@ -47,7 +47,8 @@ class AuthService with ChangeNotifier {
             uid: user.uid,
             email: user.email ?? 'N/A', // Proporcionar un valor predeterminado si el correo es nulo
             role: 'user',
-            isDisabled: false,
+            // CORREGIDO: Usar isActive
+            isActive: true, 
           );
           await _firestore.collection('users').doc(user.uid).set(newUser.toMap());
           return 'user';
@@ -73,26 +74,25 @@ class AuthService with ChangeNotifier {
     }
   }
 
-  Future<User?> createUserWithEmailAndPassword(String email, String password, {String role = 'user'}) async {
+  // CORREGIDO: Asegurar que displayName sea un parámetro nombrado y el tipo de retorno sea User?
+  // El parámetro 'role' se mantiene en la firma si lo necesitas para lógica externa,
+  // pero no se usa directamente aquí para la creación del usuario en Firebase Auth.
+  Future<User?> createUserWithEmailAndPassword(String email, String password, {String? displayName, String role = 'user'}) async {
     try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      User? user = result.user;
-      if (user != null) {
-        model.UserModel newUser = model.UserModel(
-          uid: user.uid,
-          email: user.email ?? '',
-          role: role.toLowerCase(), 
-          isDisabled: false,
-        );
-        await _firestore.collection('users').doc(user.uid).set(newUser.toMap());
-        notifyListeners(); // Notificar después de crear el usuario en Firestore también
-        return user;
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      User? user = userCredential.user; // user puede ser null
+      if (user != null) { // Siempre verificar si user no es null antes de usarlo
+        if (displayName != null && displayName.isNotEmpty) {
+          await user.updateDisplayName(displayName);
+          await user.reload(); // Recargar para obtener el displayName actualizado
+          // Asignar el usuario actualizado de Firebase Auth, que debería tener el displayName
+          user = _auth.currentUser; 
+        }
       }
-      return null; 
+      return user; // Retorna User?
     } on FirebaseAuthException catch (e) {
-      throw Exception(e.message);
-    } catch (e) {
-      throw Exception("Ocurrió un error desconocido al crear el usuario.");
+      // Manejar errores específicos si es necesario, ej: email-already-in-use
+      throw e;
     }
   }
 
@@ -113,7 +113,8 @@ class AuthService with ChangeNotifier {
           uid: supportUser.uid,
           email: supportUser.email ?? '',
           role: 'support', 
-          isDisabled: false,
+          // CORREGIDO: Usar isActive
+          isActive: true, 
         );
         await _firestore.collection('users').doc(supportUser.uid).set(newUserDoc.toMap());
         
@@ -134,13 +135,14 @@ class AuthService with ChangeNotifier {
     }
   }
 
-  Future<void> setUserDisabledStatus(String uid, bool isDisabled) async {
+  // CORREGIDO: El método ahora se llama setUserActiveStatus y opera sobre 'isActive'
+  Future<void> setUserActiveStatus(String uid, bool newIsActiveStatus) async {
     try {
-      await _firestore.collection('users').doc(uid).update({'isDisabled': isDisabled});
+      await _firestore.collection('users').doc(uid).update({'isActive': newIsActiveStatus});
       notifyListeners();
     } catch (e) {
       if (kDebugMode) {
-        print("Error al actualizar estado de deshabilitado para $uid: $e");
+        print("Error al actualizar estado de activo para $uid: $e");
       }
       throw Exception("Error al actualizar el estado del usuario.");
     }

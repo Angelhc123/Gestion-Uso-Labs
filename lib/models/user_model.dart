@@ -1,45 +1,59 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class UserModel {
   final String uid;
-  final String code;
-  final String firstName;
-  final String lastName;
-  final String role;
-  final String email;
-  bool isDisabled; // Nuevo campo para habilitar/deshabilitar
+  final String? email;
+  final String? displayName;
+  final String role; // 'user', 'support', 'admin'
+  final bool isActive; // Para activar/desactivar cuentas de soporte
+  final Timestamp? createdAt;
 
   UserModel({
     required this.uid,
-    this.code = '', // Hacemos que no sea obligatorio para todos los roles
-    this.firstName = '', // Hacemos que no sea obligatorio para todos los roles
-    this.lastName = '', // Hacemos que no sea obligatorio para todos los roles
+    this.email,
+    this.displayName,
     required this.role,
-    required this.email,
-    this.isDisabled = false, // Por defecto, el usuario está habilitado
+    this.isActive = true,
+    this.createdAt,
   });
 
-  // Método para convertir un UserModel a un Map para Firestore
+  factory UserModel.fromMap(Map<String, dynamic> map, String documentId) {
+    return UserModel(
+      uid: documentId,
+      email: map['email'],
+      displayName: map['displayName'],
+      role: map['role'] ?? 'user',
+      isActive: map['isActive'] ?? true,
+      createdAt: map['createdAt'] as Timestamp?,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
-      'uid': uid, // uid también se guarda en el documento para facilitar consultas
-      'code': code,
-      'firstName': firstName,
-      'lastName': lastName,
-      'role': role,
+      'uid': uid,
       'email': email,
-      'isDisabled': isDisabled, // Añadido al mapa
+      'displayName': displayName,
+      'role': role,
+      'isActive': isActive,
+      'createdAt': createdAt ?? FieldValue.serverTimestamp(),
     };
   }
 
-  // Método para crear un UserModel desde un Map de Firestore
-  factory UserModel.fromMap(Map<String, dynamic> map, String documentId) {
+  UserModel copyWith({
+    String? uid,
+    String? email,
+    String? displayName,
+    String? role,
+    bool? isActive,
+    Timestamp? createdAt,
+  }) {
     return UserModel(
-      uid: documentId, // Usamos el ID del documento como uid principal
-      code: map['code'] ?? '',
-      firstName: map['firstName'] ?? '',
-      lastName: map['lastName'] ?? '',
-      role: map['role'] ?? 'user',
-      email: map['email'] ?? '',
-      isDisabled: map['isDisabled'] ?? false, // Leemos el nuevo campo
+      uid: uid ?? this.uid,
+      email: email ?? this.email,
+      displayName: displayName ?? this.displayName,
+      role: role ?? this.role,
+      isActive: isActive ?? this.isActive,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 }

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
-enum ScheduleEventType { fixedSlot, labRequest }
+enum ScheduleEventType {
+  occupied, // Asegurado
+  labRequest,
+  // ... otros tipos si los tienes
+}
 
 class ScheduleEvent {
   final String id;
@@ -9,8 +13,9 @@ class ScheduleEvent {
   final TimeOfDay startTime;
   final TimeOfDay endTime;
   final ScheduleEventType type;
-  final String? originalId; // ID del documento original en Firestore
+  final String originalId; // ID del documento original en Firestore
   final Color color;
+  final String? professorName; // Asegurado
 
   ScheduleEvent({
     required this.id,
@@ -19,8 +24,9 @@ class ScheduleEvent {
     required this.startTime,
     required this.endTime,
     required this.type,
-    this.originalId,
-    this.color = Colors.blue,
+    required this.originalId,
+    required this.color,
+    this.professorName, // Parámetro opcional
   });
 
   int get durationInMinutes {

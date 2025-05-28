@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
               foregroundColor: const Color(0xFFD0BCFF), // accentPurple
             )
           ),
-          cardTheme: CardTheme(
+          cardTheme: CardThemeData( // CORREGIDO: Cambiado de CardTheme a CardThemeData
             elevation: 2,
             color: const Color(0xFF1C1B1F).withOpacity(0.85), // secondaryDark con opacidad
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

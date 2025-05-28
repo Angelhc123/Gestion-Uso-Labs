@@ -3,72 +3,122 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class LabRequestModel {
   final String id;
   final String userId;
+  final String? userName;
   final String cycle;
   final String courseOrTheme;
-  final String laboratory; // Nombre del laboratorio
-  final String? laboratoryId; // ID del laboratorio, AHORA NULLABLE
-  final DateTime entryTime;
-  final DateTime exitTime;
-  final DateTime requestTime;
-  final String status; // 'pending', 'approved', 'rejected'
-  final String? supportComment; // Nuevo: Comentario del soporte
-  final DateTime? actionTimestamp; // Nuevo: Hora de aprobación/rechazo
-  final String? processedBySupportUserId; // Nuevo: ID del usuario de soporte que procesó
-  final String? justification; // Nuevo campo
+  final String laboratoryId;
+  final String laboratoryName;
+  final Timestamp entryTime;
+  final Timestamp exitTime;
+  final Timestamp requestDate;
+  final String status; // PENDIENTE, APROBADO, RECHAZADO
+  final String? professorName;
+  final Timestamp? createdAt;
+  final String? processedBySupportUserId;
+  final Timestamp? processedTimestamp;
+  final String? supportComment;
+  final String? justification; // NUEVO CAMPO
 
   LabRequestModel({
     required this.id,
     required this.userId,
+    this.userName,
     required this.cycle,
     required this.courseOrTheme,
-    required this.laboratory,
-    this.laboratoryId, // Ya es opcional, ahora coincide con el tipo nullable
+    required this.laboratoryId,
+    required this.laboratoryName,
     required this.entryTime,
     required this.exitTime,
-    required this.requestTime,
+    required this.requestDate,
     required this.status,
-    this.supportComment,
-    this.actionTimestamp,
+    this.professorName,
+    this.createdAt,
     this.processedBySupportUserId,
-    this.justification, // Nuevo campo
+    this.processedTimestamp,
+    this.supportComment,
+    this.justification, // AÑADIDO AL CONSTRUCTOR
   });
 
-  // Método para convertir un LabRequestModel a un Map para Firestore
-  Map<String, dynamic> toMap() {
-    return {
-      'userId': userId,
-      'cycle': cycle,
-      'courseOrTheme': courseOrTheme,
-      'laboratory': laboratory,
-      'laboratoryId': laboratoryId, // Correcto, puede ser null
-      'entryTime': Timestamp.fromDate(entryTime),
-      'exitTime': Timestamp.fromDate(exitTime),
-      'requestTime': Timestamp.fromDate(requestTime),
-      'status': status,
-      'supportComment': supportComment, // Añadido
-      'actionTimestamp': actionTimestamp != null ? Timestamp.fromDate(actionTimestamp!) : null, // Añadido
-      'processedBySupportUserId': processedBySupportUserId, // Añadido
-      'justification': justification, // Nuevo campo
-    };
+  LabRequestModel copyWith({
+    String? id,
+    String? userId,
+    String? userName,
+    String? cycle,
+    String? courseOrTheme,
+    String? laboratoryId,
+    String? laboratoryName,
+    Timestamp? entryTime,
+    Timestamp? exitTime,
+    Timestamp? requestDate,
+    String? status,
+    String? professorName,
+    Timestamp? createdAt,
+    String? processedBySupportUserId,
+    Timestamp? processedTimestamp,
+    String? supportComment,
+    String? justification, // AÑADIDO A COPYWITH
+  }) {
+    return LabRequestModel(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      userName: userName ?? this.userName,
+      cycle: cycle ?? this.cycle,
+      courseOrTheme: courseOrTheme ?? this.courseOrTheme,
+      laboratoryId: laboratoryId ?? this.laboratoryId,
+      laboratoryName: laboratoryName ?? this.laboratoryName,
+      entryTime: entryTime ?? this.entryTime,
+      exitTime: exitTime ?? this.exitTime,
+      requestDate: requestDate ?? this.requestDate,
+      status: status ?? this.status,
+      professorName: professorName ?? this.professorName,
+      createdAt: createdAt ?? this.createdAt,
+      processedBySupportUserId: processedBySupportUserId ?? this.processedBySupportUserId,
+      processedTimestamp: processedTimestamp ?? this.processedTimestamp,
+      supportComment: supportComment ?? this.supportComment,
+      justification: justification ?? this.justification, // AÑADIDO
+    );
   }
 
-  // Método para crear un LabRequestModel desde un Map de Firestore
   factory LabRequestModel.fromMap(Map<String, dynamic> map, String documentId) {
     return LabRequestModel(
       id: documentId,
       userId: map['userId'] ?? '',
+      userName: map['userName'],
       cycle: map['cycle'] ?? '',
       courseOrTheme: map['courseOrTheme'] ?? '',
-      laboratory: map['laboratory'] ?? '',
-      laboratoryId: map['laboratoryId'], // Correcto, puede ser null y se asigna a un tipo nullable
-      entryTime: (map['entryTime'] as Timestamp).toDate(),
-      exitTime: (map['exitTime'] as Timestamp).toDate(),
-      requestTime: (map['requestTime'] as Timestamp).toDate(),
-      status: map['status'] ?? 'pending',
-      supportComment: map['supportComment'], // Añadido
-      actionTimestamp: map['actionTimestamp'] != null ? (map['actionTimestamp'] as Timestamp).toDate() : null, // Añadido
-      processedBySupportUserId: map['processedBySupportUserId'], // Añadido
-      justification: map['justification'], // Nuevo campo
+      laboratoryId: map['laboratoryId'] ?? '',
+      laboratoryName: map['laboratoryName'] ?? '',
+      entryTime: map['entryTime'] ?? Timestamp.now(),
+      exitTime: map['exitTime'] ?? Timestamp.now(),
+      requestDate: map['requestDate'] ?? Timestamp.now(),
+      status: map['status'] ?? 'PENDIENTE',
+      professorName: map['professorName'],
+      createdAt: map['createdAt'],
+      processedBySupportUserId: map['processedBySupportUserId'],
+      processedTimestamp: map['processedTimestamp'],
+      supportComment: map['supportComment'],
+      justification: map['justification'], // AÑADIDO A FROMMAP
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'userId': userId,
+      'userName': userName,
+      'cycle': cycle,
+      'courseOrTheme': courseOrTheme,
+      'laboratoryId': laboratoryId,
+      'laboratoryName': laboratoryName,
+      'entryTime': entryTime,
+      'exitTime': exitTime,
+      'requestDate': requestDate,
+      'status': status,
+      'professorName': professorName,
+      'createdAt': createdAt ?? FieldValue.serverTimestamp(),
+      'processedBySupportUserId': processedBySupportUserId,
+      'processedTimestamp': processedTimestamp,
+      'supportComment': supportComment,
+      'justification': justification, // AÑADIDO A TOMAP
+    };
   }
 }

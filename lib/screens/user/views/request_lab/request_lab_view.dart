@@ -1,10 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart'; // Necesario para Timestamp
 import 'package:controlusolab/models/course_model.dart';
 import 'package:controlusolab/models/lab_request_model.dart';
 import 'package:controlusolab/models/laboratory_model.dart';
-// Asumiendo que tienes un modelo para los slots ocupados, por ejemplo:
-// import 'package:controlusolab/models/occupied_slot_model.dart'; 
-// Si no es así, necesitarás el tipo correcto para fixedSlotsData.
-// Por ahora, usaré 'dynamic' y luego puedes ajustarlo.
+import 'package:controlusolab/models/occupied_slot_model.dart'; // AÑADIDO
 import 'package:controlusolab/services/auth_service.dart';
 import 'package:controlusolab/services/firestore_service.dart';
 import 'package:flutter/foundation.dart';
@@ -23,12 +21,27 @@ import './widgets/submit_request_button.dart';
 import './widgets/cycle_selector_dropdown.dart';
 import './widgets/course_selector_dropdown.dart'; // Importar el nuevo widget
 
+// Nueva clase para información detallada de slots ocupados
+class OccupiedSlotInfo {
+  final TimeOfDay startTime;
+  final TimeOfDay endTime;
+  final String eventName; // Nombre del curso o tema de la solicitud
+  final bool isFixedSchedule; // Para diferenciar horarios fijos de solicitudes
+
+  OccupiedSlotInfo({
+    required this.startTime,
+    required this.endTime,
+    required this.eventName,
+    required this.isFixedSchedule,
+  });
+}
+
 class RequestLabView extends StatefulWidget {
   final List<LaboratoryModel> laboratories;
   final bool isLoadingLaboratories;
   final List<CourseModel> courses;
   final bool isLoadingCourses;
-  final Function(LaboratoryModel?) onLaboratorySelected;
+  // final Function(LaboratoryModel?) onLaboratorySelected; // ELIMINADA ESTA LÍNEA
   final Function() onRequestSubmitted;
 
   const RequestLabView({
@@ -37,7 +50,7 @@ class RequestLabView extends StatefulWidget {
     required this.isLoadingLaboratories,
     required this.courses,
     required this.isLoadingCourses,
-    required this.onLaboratorySelected,
+    // required this.onLaboratorySelected, // ELIMINADA ESTA LÍNEA
     required this.onRequestSubmitted,
   });
 
@@ -59,8 +72,8 @@ class _RequestLabViewState extends State<RequestLabView> {
   String? _justification; // Nuevo estado para la justificación
   bool _isSubmitting = false;
 
-  Set<int> _selectedSlotIndices = {};
-  List<TimeRange> _occupiedTimeRanges = [];
+  Set<int> _selectedSlotIndices = {}; // RESTAURADO: para manejar la selección del usuario
+  List<OccupiedSlotInfo> _detailedOccupiedSlots = [];
   bool _isLoadingSchedule = false;
   TimeOfDay? _finalSelectedEntryTime;
   TimeOfDay? _finalSelectedExitTime;
@@ -69,10 +82,8 @@ class _RequestLabViewState extends State<RequestLabView> {
   void initState() {
     super.initState();
     _professorName = _authService.currentUser?.displayName ?? _authService.currentUser?.email;
-    _selectedDate = DateTime.now();
-    if (_selectedLaboratoryInForm != null && _selectedDate != null) {
-      _loadOccupiedTimesForSelectedDayAndLab();
-    }
+    _selectedDate = DateTime.now(); // Seleccionar hoy por defecto
+    // No llamar a _loadOccupiedTimesForSelectedDayAndLab aquí si _selectedLaboratoryInForm es null
   }
 
   TimeOfDay _parseTimeOfDay(String timeStr) {
@@ -81,11 +92,21 @@ class _RequestLabViewState extends State<RequestLabView> {
   }
 
   Future<void> _loadOccupiedTimesForSelectedDayAndLab() async {
-    if (_selectedLaboratoryInForm == null || _selectedDate == null) return;
+    if (_selectedLaboratoryInForm == null || _selectedDate == null) {
+      // Si no hay laboratorio o fecha, limpiar los slots y no cargar nada.
+      setState(() {
+        _isLoadingSchedule = false;
+        _detailedOccupiedSlots = [];
+        _selectedSlotIndices = {};
+        _finalSelectedEntryTime = null;
+        _finalSelectedExitTime = null;
+      });
+      return;
+    }
 
     setState(() {
       _isLoadingSchedule = true;
-      _occupiedTimeRanges = [];
+      _detailedOccupiedSlots = []; // CAMBIADO
       _selectedSlotIndices = {};
       _finalSelectedEntryTime = null;
       _finalSelectedExitTime = null;
@@ -95,41 +116,46 @@ class _RequestLabViewState extends State<RequestLabView> {
       final lab = _selectedLaboratoryInForm!;
       final date = _selectedDate!;
       final dayOfWeek = DateFormat('EEEE', 'es_ES').format(date).toUpperCase();
-      String labIdentifierForFixedSlots = lab.name.replaceAll(' ', '_').replaceAll('(', '').replaceAll(')', '').toUpperCase();
+      // El identificador para slots fijos debe coincidir con cómo se guardó en Firestore.
+      // Si en Firestore se guarda el ID del laboratorio para OccupiedSlotModel, usa lab.id.
+      // Si se guarda el nombre (como parece en temporal_data_upload), usa lab.name.
+      // Por consistencia, es mejor usar lab.id si OccupiedSlotModel tiene laboratoryId.
+      // Asumiendo que OccupiedSlotModel.laboratoryId es el NOMBRE del laboratorio:
+      String labIdentifierForFixedSlots = lab.name; // CORREGIDO: Usar lab.name
 
-      // Ejecutar ambas consultas en paralelo
+
       final List<dynamic> results = await Future.wait([
-        _firestoreService.getOccupiedSlotsByLaboratoryAndDay(labIdentifierForFixedSlots, dayOfWeek).first,
-        _firestoreService.getLabRequestsByLaboratoryAndDate(lab.id, date).first,
+        _firestoreService.getOccupiedSlotsByLaboratoryAndDay(labIdentifierForFixedSlots, dayOfWeek).first, // CORREGIDO y usando labIdentifierForFixedSlots
+        _firestoreService.getLabRequestsByLaboratoryAndDate(lab.id, date).first, // Para solicitudes, el ID del lab es correcto
       ]);
 
-      // Asignar los resultados a sus respectivas variables
-      // TODO: Reemplaza 'dynamic' con el tipo correcto de tu OccupiedSlotModel si lo tienes.
-      // Ejemplo: final List<OccupiedSlotModel> fixedSlotsData = results[0] as List<OccupiedSlotModel>;
-      final List<dynamic> fixedSlotsData = results[0] as List<dynamic>; // Ajusta este tipo
+      final List<OccupiedSlotModel> fixedSlotsData = results[0] as List<OccupiedSlotModel>;
       final List<LabRequestModel> labRequestsData = results[1] as List<LabRequestModel>;
 
-      List<TimeRange> occupied = [];
+      List<OccupiedSlotInfo> newOccupiedSlotsInfo = []; // CAMBIADO
 
-      // Asegúrate de que 'slot.startTime' y 'slot.endTime' existan en los objetos de fixedSlotsData
       for (var slot in fixedSlotsData) {
-        // Si fixedSlotsData es List<OccupiedSlotModel>, esto sería slot.startTime, slot.endTime
-        // Si es List<Map<String, dynamic>> directamente de Firestore, sería slot['startTime'], slot['endTime']
-        // Ajusta el acceso a las propiedades según la estructura real de 'slot'
-        occupied.add(TimeRange(_parseTimeOfDay(slot.startTime as String), _parseTimeOfDay(slot.endTime as String)));
+        newOccupiedSlotsInfo.add(OccupiedSlotInfo( // CAMBIADO
+          startTime: _parseTimeOfDay(slot.startTime),
+          endTime: _parseTimeOfDay(slot.endTime),
+          eventName: slot.courseName ?? 'Horario Fijo',
+          isFixedSchedule: true,
+        ));
       }
 
       for (var req in labRequestsData) {
-        if (req.status == 'approved') {
-          occupied.add(TimeRange(
-            TimeOfDay.fromDateTime(req.entryTime.toLocal()),
-            TimeOfDay.fromDateTime(req.exitTime.toLocal()),
+        if (req.status.toUpperCase() == 'APROBADO') {
+          newOccupiedSlotsInfo.add(OccupiedSlotInfo( // CAMBIADO
+            startTime: TimeOfDay.fromDateTime(req.entryTime.toDate().toLocal()),
+            endTime: TimeOfDay.fromDateTime(req.exitTime.toDate().toLocal()),
+            eventName: req.courseOrTheme,
+            isFixedSchedule: false,
           ));
         }
       }
       if (!mounted) return;
       setState(() {
-        _occupiedTimeRanges = occupied;
+        _detailedOccupiedSlots = newOccupiedSlotsInfo; // CAMBIADO
         _isLoadingSchedule = false;
       });
     } catch (e) {
@@ -217,16 +243,16 @@ class _RequestLabViewState extends State<RequestLabView> {
     }
     
     // Validar que se haya ingresado una justificación
-    if (_justification == null || _justification!.trim().isEmpty) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor, ingrese una justificación.', style: TextStyle(color: textOnDark)), backgroundColor: warningColor),
-      );
-      setState(() => _isSubmitting = false);
-      return;
-    }
+    // if (_justification == null || _justification!.trim().isEmpty) { // Esta validación ya está en el TextFormField
+    //   if (!mounted) return;
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(content: Text('Por favor, ingrese una justificación.', style: TextStyle(color: textOnDark)), backgroundColor: warningColor),
+    //   );
+    //   setState(() => _isSubmitting = false);
+    //   return;
+    // }
 
-    final String courseOrThemeValue = _selectedCourse!.name; // Usar el nombre del curso seleccionado
+    final String courseOrThemeValue = _selectedCourse!.name; 
 
     if (_finalSelectedEntryTime == null || _finalSelectedExitTime == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -271,15 +297,18 @@ class _RequestLabViewState extends State<RequestLabView> {
     LabRequestModel newRequest = LabRequestModel(
       id: '', 
       userId: userId,
+      userName: _authService.currentUser?.displayName ?? _authService.currentUser?.email, 
       cycle: _cycle!,
-      courseOrTheme: courseOrThemeValue, // Usar el nombre del curso
-      laboratory: _selectedLaboratoryInForm!.name,
+      courseOrTheme: courseOrThemeValue,
       laboratoryId: _selectedLaboratoryInForm!.id,
-      entryTime: entryDateTime,
-      exitTime: exitDateTime,
-      requestTime: DateTime.now(),
-      status: 'pending',
-      justification: _justification, // Añadir justificación
+      laboratoryName: _selectedLaboratoryInForm!.name, 
+      entryTime: Timestamp.fromDate(entryDateTime),
+      exitTime: Timestamp.fromDate(exitDateTime),
+      requestDate: Timestamp.fromDate(_selectedDate!),
+      status: 'PENDIENTE',
+      professorName: _professorName,
+      justification: _justification, // AÑADIDO: Guardar la justificación
+      createdAt: Timestamp.now(),
     );
 
     await _firestoreService.addLabRequest(newRequest);
@@ -300,7 +329,7 @@ class _RequestLabViewState extends State<RequestLabView> {
       if (_selectedLaboratoryInForm != null) {
         _loadOccupiedTimesForSelectedDayAndLab();
       } else {
-         _occupiedTimeRanges = [];
+         _detailedOccupiedSlots = []; // CAMBIADO
       }
     });
     widget.onRequestSubmitted(); 
@@ -323,7 +352,8 @@ class _RequestLabViewState extends State<RequestLabView> {
                 onChanged: (LaboratoryModel? newValue) {
                   setState(() {
                     _selectedLaboratoryInForm = newValue;
-                    widget.onLaboratorySelected(newValue); 
+                    // Ya no se llama a widget.onLaboratorySelected para cambiar de vista.
+                    // Solo se actualiza el estado local y se cargan los horarios.
                   });
                   _loadOccupiedTimesForSelectedDayAndLab(); 
                 },
@@ -346,7 +376,8 @@ class _RequestLabViewState extends State<RequestLabView> {
               if (_selectedLaboratoryInForm != null && _selectedDate != null)
                 TimeSlotSelectorGrid(
                   selectedIndices: _selectedSlotIndices,
-                  occupiedTimeRanges: _occupiedTimeRanges,
+                  // occupiedTimeRanges: _occupiedTimeRanges, // YA NO SE USA
+                  detailedOccupiedSlots: _detailedOccupiedSlots, // AÑADIDO
                   onSlotSelected: _handleSlotSelection,
                   isLoading: _isLoadingSchedule,
                 )

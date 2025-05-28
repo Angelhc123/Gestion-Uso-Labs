@@ -1,0 +1,111 @@
+LISTADO DE CURSOS (ALFABÉTICO):
+
+Arquitectura de Computadoras
+Auditoria de Sistemas
+Base de Datos I
+Base de Datos II
+Calidad y Pruebas de Software
+Comunicación I
+Comunicación II
+Construcción de Software I
+Construcción de Software II
+Desarrollo Competencias Digitales
+Desarrollo Personal y Liderazgo
+Diseño de Base de Datos
+Diseño en Ingenieria
+Diseño y Arq de Software
+Diseño y Modelamiento Virtual
+Ecologia y desarrollo sostenible
+EG-322 ETICA
+Estadistica Inferencial y Analisis de Datos
+Estrategia para el Aprendizaje Autónomo
+Estructura de Datos
+Filosofia
+Fisica I
+Gerencia de TI
+Gestión de la Configuración y Adm. De SW
+Gestión de Proyectos
+INE-321 ECONOMIA
+INE-323 Estadistica y Prob
+Infraestructura de TI
+Ingeniería de Requerimientos
+Ingeniería de Software
+Ingeniería econ. y Financiera
+Inglés Técnico
+Inteligencia Artificial
+Inteligencia de Negocios
+Interacción y Diseño de Interfaces
+Investigación de Operaciones
+Matemática Básica
+Matemática Discreta
+Matemática I
+Matemática II
+Modelamiento de Procesos
+Patrones de Software
+Planeamiento Estrategico de TI
+Problemas y Desafios del Peru
+Programación I
+Programación II
+Programación III
+Programación Web I
+Programación Web II
+REFORZAMIENTO FISICA I
+REFORZAMIENTO MATEMATICA I
+REFORZAMIENTO PROGRAMACION COMPETITIVA
+Redes y Comunic. de datos I
+Redes y Comunic. de datos II
+Seguridad de TI
+Sistemas de Información
+Sistemas Elect. Digitales
+Sistemas Operativos I
+Sistemas Operativos II
+Soluciones Moviles II
+Soluciones Móviles I
+Taller de liderazgo y emprendimiento
+Taller de Tesis I
+Taller de Tesis II / Trabajo de Investigación
+Territorio Peruano Defensa y seguridad Nacional
+Técnicas de Programación
+
+LISTADO DE PROFESORES (ALFABÉTICO):
+
+A. Alca
+A. Crisosto
+A. Flor
+A. Montero
+Alex Yanqui
+Carlos Nuñez
+D. Huanca
+D. Rubira
+E. Lanchipa
+E. Lopez
+E. Valencia
+E. Vilela
+Elard Rodriguez
+Elizabeth Merma
+German Mamani
+H. Sisa
+ING. J. ROMAINA
+Israel Chaparro
+J. Alca
+Juan Choque
+L. Fernandez
+Liliana Vega
+Luis Fernandez
+Manuel Aguilar
+Mariella Ibarra
+Martha Paredes
+Martin Alcantara
+N. Castro
+N.Quispe
+Natividad
+O. Arce
+O. Flores
+O. Jimenez
+P. Cuadros
+Renzo Taco
+Ricardo Valcarcel
+Roberto Montesinos
+Silvia Centella
+Teresa Lanchipa
+Tito Ale

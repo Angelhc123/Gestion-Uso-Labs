@@ -6,9 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../utils/app_colors.dart';
-import './widgets/request_list_item_widget.dart'; // Importar el nuevo widget
-
-// Paleta de colores SE ELIMINA
+import './widgets/request_list_item_widget.dart';
 
 class PendingLabRequestsView extends StatefulWidget {
   const PendingLabRequestsView({super.key});
@@ -28,7 +26,7 @@ class _PendingLabRequestsViewState extends State<PendingLabRequestsView> {
     _currentUser = _authService.currentUser;
   }
 
-  Future<void> _showProcessRequestDialog(LabRequestModel request, String newStatus) async {
+  Future<void> _processRequest(LabRequestModel request, String newStatus) async {
     String? supportComment;
     final commentController = TextEditingController();
 
@@ -61,7 +59,7 @@ class _PendingLabRequestsViewState extends State<PendingLabRequestsView> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('El comentario es obligatorio al rechazar.', style: TextStyle(color: textOnDark)), backgroundColor: warningColor),
                   );
-                  return; 
+                  return;
                 }
                 supportComment = commentController.text.trim();
                 Navigator.pop(context, true);
@@ -78,26 +76,26 @@ class _PendingLabRequestsViewState extends State<PendingLabRequestsView> {
         try {
           await _firestoreService.updateLabRequestStatus(
             request.id,
-            newStatus,
+            newStatus.toUpperCase(), // Asegurar que el estado se guarde en mayúsculas
             supportComment ?? "", 
             _currentUser!.uid,
           );
           if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar( 
               SnackBar(content: Text('Solicitud ${newStatus == 'approved' ? 'aprobada' : 'rechazada'} con éxito.', style: const TextStyle(color: textOnDark)), backgroundColor: successColor),
             );
           }
-        } catch (e) {
+        } catch (e) { 
           if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar( 
               SnackBar(content: Text('Error al procesar la solicitud: $e', style: const TextStyle(color: textOnDark)), backgroundColor: errorColor),
             );
           }
         }
-      } else {
+      } else { 
          if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Error: Usuario de soporte no identificado.', style: TextStyle(color: textOnDark)), backgroundColor: errorColor),
+            const SnackBar(content: Text('Error: Usuario de soporte no identificado.', style: TextStyle(color: textOnDark)), backgroundColor: errorColor), 
           );
         }
       }
@@ -135,12 +133,15 @@ class _PendingLabRequestsViewState extends State<PendingLabRequestsView> {
               child: ExpansionTile(
                 collapsedIconColor: accentPurple,
                 iconColor: accentPurple,
-                title: Text('Solicitudes para ${DateFormat.yMMMEd('es_ES').format(date)} (${requestsForDay.length})', style: const TextStyle(color: accentPurple, fontWeight: FontWeight.bold)),
-                initiallyExpanded: true, 
+                title: Text(
+                  'Solicitudes para ${DateFormat.yMMMEd('es_ES').format(date)} (${requestsForDay.length})',
+                  style: const TextStyle(color: accentPurple, fontWeight: FontWeight.bold),
+                ),
+                initiallyExpanded: index == 0, 
                 children: requestsForDay.map((request) {
-                  return RequestListItemWidget( // Usar el nuevo widget
+                  return RequestListItemWidget( 
                     request: request,
-                    onProcessRequest: _showProcessRequestDialog,
+                    onProcessRequest: _processRequest, 
                   );
                 }).toList(),
               ),

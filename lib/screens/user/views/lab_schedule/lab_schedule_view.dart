@@ -91,7 +91,10 @@ class _LabScheduleViewState extends State<LabScheduleView> {
     return TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
   }
 
-  Color _getColorForEventTitle(String eventTitle) {
+  Color _getColorForEventTitle(String eventTitle, {bool isFixed = false}) {
+    if (isFixed) {
+      return Colors.grey.shade700; // Color distintivo para horarios fijos
+    }
     if (_eventColorsCache.containsKey(eventTitle)) {
       return _eventColorsCache[eventTitle]!;
     }
@@ -105,94 +108,86 @@ class _LabScheduleViewState extends State<LabScheduleView> {
     if (lab == null) {
       if (mounted) {
         setState(() {
-          _scheduleEventsByDay = {};
+          _scheduleEventsByDay = { for (var day in _daysOfWeek) day : [] };
           _isLoadingScheduleData = false;
         });
       }
       return;
     }
-
     if (mounted) {
       setState(() {
         _isLoadingScheduleData = true;
-        _scheduleEventsByDay = {};
-        _eventColorsCache.clear();
+        _scheduleEventsByDay = { for (var day in _daysOfWeek) day : [] };
+        _eventColorsCache.clear(); // Limpiar caché de colores para nuevo laboratorio
         _nextColorIndex = 0;
       });
     }
 
-    Map<String, List<ScheduleEvent>> eventsMap = {};
-    for (String day in _daysOfWeek) {
-      eventsMap[day] = [];
-    }
-
-    try {
-      String labIdentifierForFixedSlots = lab.name
-          .replaceAll(' ', '_')
-          .replaceAll('(', '')
-          .replaceAll(')', '')
-          .toUpperCase();
-      for (String dayKey in _daysOfWeek) {
-        final fixedSlotsData = await _firestoreService
-            .getOccupiedSlotsByLaboratoryAndDay(labIdentifierForFixedSlots, dayKey)
-            .first;
-        for (var slot in fixedSlotsData) {
-          final eventTitle = slot.courseName ?? 'Clase Fija';
-          eventsMap[dayKey]!.add(ScheduleEvent(
-            id: 'fixed_${slot.slotId}',
-            title: eventTitle,
-            dayOfWeek: slot.dayOfWeek.toUpperCase(),
-            startTime: _parseTimeOfDay(slot.startTime),
-            endTime: _parseTimeOfDay(slot.endTime),
-            type: ScheduleEventType.fixedSlot,
-            originalId: slot.slotId,
-            color: _getColorForEventTitle(eventTitle),
-          ));
-        }
-      }
-
-      final labRequestsData = await _firestoreService
-          .getLabRequestsByLaboratoryId(lab.id)
+    try { // Añadido try-catch para manejar errores durante la carga
+      final occupiedSlotsData = await _firestoreService
+          .getOccupiedSlotsStream() // Considera filtrar por lab.name aquí si es posible en FirestoreService
           .first;
-      for (var req in labRequestsData) {
-        if (req.status == 'approved') {
-          String dayOfWeek = DateFormat('EEEE', 'es_ES')
-              .format(req.entryTime.toLocal())
-              .toUpperCase();
-          if (eventsMap.containsKey(dayOfWeek)) {
-            final eventTitle = req.courseOrTheme;
-            eventsMap[dayOfWeek]!.add(ScheduleEvent(
-              id: 'request_${req.id}',
-              title: eventTitle,
-              dayOfWeek: dayOfWeek,
-              startTime: TimeOfDay.fromDateTime(req.entryTime.toLocal()),
-              endTime: TimeOfDay.fromDateTime(req.exitTime.toLocal()),
-              type: ScheduleEventType.labRequest,
-              originalId: req.id,
-              color: _getColorForEventTitle(eventTitle),
+
+      for (var slot in occupiedSlotsData) {
+        // Asumiendo que slot.laboratoryId es el NOMBRE del laboratorio
+        if (slot.laboratoryId == lab.name) { 
+          final dayKey = slot.dayOfWeek.toUpperCase();
+          if (_scheduleEventsByDay.containsKey(dayKey)) {
+            final eventTitle = slot.courseName ?? 'Horario Fijo'; // Asegura que title no sea null
+            _scheduleEventsByDay[dayKey]!.add(ScheduleEvent(
+              id: 'occupied_${slot.id}_${slot.startTime}', 
+              title: eventTitle, // title se asigna aquí
+              dayOfWeek: dayKey,
+              startTime: _parseTimeOfDay(slot.startTime),
+              endTime: _parseTimeOfDay(slot.endTime),
+              type: ScheduleEventType.occupied, 
+              originalId: slot.id,
+              color: _getColorForEventTitle(eventTitle, isFixed: true),
+              professorName: slot.professorName, 
             ));
           }
         }
       }
-      if (!mounted) return;
-      setState(() {
-        _scheduleEventsByDay = eventsMap;
-      });
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error al cargar datos del horario: $e',
-              style: const TextStyle(color: textOnDark)),
-          backgroundColor: errorColor,
-        ),
-      );
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoadingScheduleData = false;
-        });
+      
+      final labRequestsData = await _firestoreService
+          .getLabRequestsByLaboratoryId(lab.id) // Aquí se usa lab.id, lo cual es correcto
+          .first;
+
+      for (var req in labRequestsData) {
+        if (req.status.toUpperCase() == 'APROBADO') {
+          DateTime requestSpecificDate = req.requestDate.toDate();
+          String dayOfWeek = DateFormat('EEEE', 'es_ES')
+              .format(requestSpecificDate.toLocal())
+              .toUpperCase();
+
+          if (_scheduleEventsByDay.containsKey(dayOfWeek)) {
+            final eventTitle = req.courseOrTheme; // Asegura que title no sea null
+            _scheduleEventsByDay[dayOfWeek]!.add(ScheduleEvent(
+              id: 'request_${req.id}',
+              title: eventTitle, // title se asigna aquí
+              dayOfWeek: dayOfWeek,
+              startTime: TimeOfDay.fromDateTime(req.entryTime.toDate().toLocal()),
+              endTime: TimeOfDay.fromDateTime(req.exitTime.toDate().toLocal()),
+              type: ScheduleEventType.labRequest,
+              originalId: req.id,
+              color: _getColorForEventTitle(eventTitle, isFixed: false),
+              professorName: req.professorName, 
+            ));
+          }
+        }
       }
+    } catch (e) {
+        if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Error cargando datos del horario: $e', style: const TextStyle(color: textOnDark)), backgroundColor: errorColor)
+            );
+        }
+    } finally {
+        if (mounted) {
+          setState(() {
+            _isLoadingScheduleData = false;
+          });
+        }
     }
   }
 

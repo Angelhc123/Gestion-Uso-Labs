@@ -1,25 +1,26 @@
 import 'package:controlusolab/models/lab_request_model.dart';
 import 'package:controlusolab/services/firestore_service.dart';
 import 'package:flutter/material.dart';
-// import 'package:intl/intl.dart'; // No es necesario aquí si el widget lo maneja
+import 'package:controlusolab/utils/app_colors.dart';
+import './widgets/history_list_item_widget.dart'; // Usando el widget de esta carpeta
 
-import '../../../../utils/app_colors.dart';
-import './widgets/history_list_item_widget.dart';
+class SupportActionsHistoryView extends StatefulWidget {
+  const SupportActionsHistoryView({super.key});
 
-// Paleta de colores SE ELIMINA
+  @override
+  State<SupportActionsHistoryView> createState() => _SupportActionsHistoryViewState();
+}
 
-class SupportActionsHistoryView extends StatelessWidget {
+class _SupportActionsHistoryViewState extends State<SupportActionsHistoryView> {
   final FirestoreService _firestoreService = FirestoreService();
-
-  SupportActionsHistoryView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<LabRequestModel>>(
-      stream: _firestoreService.getProcessedLabRequests(),
+      stream: _firestoreService.getProcessedLabRequests(), 
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator(color: accentPurple)); // O adminAccentPurple
+          return const Center(child: CircularProgressIndicator(color: accentPurple));
         }
         if (snapshot.hasError) {
           return Center(child: Text('Error al cargar historial: ${snapshot.error}', style: const TextStyle(color: errorColor)));
@@ -27,13 +28,22 @@ class SupportActionsHistoryView extends StatelessWidget {
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return const Center(child: Text('No hay acciones de soporte registradas.', style: TextStyle(color: textOnDarkSecondary)));
         }
-        final processedRequests = snapshot.data!;
+        final historyItems = snapshot.data!;
+        historyItems.sort((a, b) {
+          final aTimestamp = a.processedTimestamp;
+          final bTimestamp = b.processedTimestamp;
+          if (aTimestamp == null && bTimestamp == null) return 0;
+          if (aTimestamp == null) return 1;
+          if (bTimestamp == null) return -1;
+          return bTimestamp.compareTo(aTimestamp); 
+        });
+
         return ListView.builder(
           padding: const EdgeInsets.all(8.0),
-          itemCount: processedRequests.length,
+          itemCount: historyItems.length,
           itemBuilder: (context, index) {
-            final request = processedRequests[index];
-            return HistoryListItemWidget(request: request); // Usar el nuevo widget
+            final request = historyItems[index];
+            return HistoryListItemWidget(request: request); // Usando el widget
           },
         );
       },
